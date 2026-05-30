@@ -1,0 +1,13 @@
+* NGSPICE file created from inverter.ext - technology: scmos
+
+.global Vdd Gnd 
+
+
+* Top level circuit inverter
+
+M1000 out in vdd vdd pfet w=10u l=3u
++  ad=110p pd=42u as=70p ps=34u
+M1001 out in gnd_ Gnd nfet w=8u l=3u
++  ad=80p pd=36u as=56p ps=30u
+.end
+

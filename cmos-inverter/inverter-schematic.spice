@@ -1,0 +1,6 @@
+* Schematic netlist for LVS of CMOS inverter
+
+M1 out in vdd vdd pfet w=10 l=3
+M2 out in 0   0   nfet w=8  l=3
+
+.end

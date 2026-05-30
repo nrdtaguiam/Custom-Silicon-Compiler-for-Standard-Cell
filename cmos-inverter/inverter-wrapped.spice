@@ -1,0 +1,22 @@
+* SPICE3 file created from inverter.ext - technology: scmos
+.model pfet pmos level=1 vto=-0.7 kp=20u
+.model nfet nmos level=1 vto=0.7  kp=50u
+
+.option scale=1u
+
+M1000 out in vdd vdd pfet w=10 l=3
+M1001 out in 0 0 nfet w=8 l=3
+
+C0 vdd in 2.10fF
+C2 out 0 3.57fF
+C3 in 0 8.54fF
+
+v1 vdd 0 1.8
+vin in 0 pulse(0 1.8 5n 1n 1n 20n 50n)
+
+.tran 5n 200n
+.control
+run 
+plot V(in) V(out)
+.endc
+.end

@@ -1,0 +1,27 @@
+*************************************************
+* CMOS Inverter – DC ANALYSIS
+*************************************************
+
+.global Gnd
+
+VDD vdd Gnd 1.8
+VIN in  Gnd 0
+
+CL out Gnd 10f
+
+M1000 out in vdd vdd pfet w=10u l=3u
+M1001 out in Gnd Gnd nfet w=8u  l=3u
+
+.model nfet nmos level=1
+.model pfet pmos level=1
+
+.measure dc VOH MAX v(out)
+.measure dc VOL MIN v(out)
+.measure dc VM  FIND v(in) WHEN v(out)=v(in)
+
+.control
+dc VIN 0 1.8 0.001
+wrdata vtc.dat v(in) v(out)
+.endc
+
+.end

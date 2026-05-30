@@ -1,0 +1,37 @@
+*************************************************
+* CMOS Inverter – TRANSIENT ANALYSIS
+*************************************************
+
+.global Gnd
+
+VDD vdd Gnd 1.8
+VIN in  Gnd PULSE(0 1.8 0 1n 1n 10n 20n)
+
+CL out Gnd 10f
+
+M1000 out in vdd vdd pfet w=10u l=3u
+M1001 out in Gnd Gnd nfet w=8u  l=3u
+
+.model nfet nmos level=1
+.model pfet pmos level=1
+
+.measure tran TPHL TRIG v(in) VAL=0.9 RISE=1
++               TARG v(out) VAL=0.9 FALL=1
+
+.measure tran TPLH TRIG v(in) VAL=0.9 FALL=1
++               TARG v(out) VAL=0.9 RISE=1
+
+.measure tran TRISE TRIG v(out) VAL=0.18 RISE=1
++                TARG v(out) VAL=1.62 RISE=1
+
+.measure tran TFALL TRIG v(out) VAL=1.62 FALL=1
++                TARG v(out) VAL=0.18 FALL=1
+
+.measure tran IAVG AVG i(VDD)
+.measure tran PAVG PARAM='-1.8*IAVG'
+
+.control
+tran 0.1n 100n
+.endc
+
+.end

@@ -1,0 +1,31 @@
+* CMOS Inverter Characterization Template
+.global vdd Gnd
+
+* Power Supply
+VDD vdd Gnd 1.8
+
+* Parametric Input Signal Source
+* PULSE(V1 V2 TD TR TF PW PER)
+* Starts at 0V, rises to 1.8V with TR={{INPUT_SLEW}}, falls with TF={{INPUT_SLEW}}
+VIN in Gnd PULSE(0 1.8 1n {{INPUT_SLEW}} {{INPUT_SLEW}} 10n 20n)
+
+* Parametric Load Capacitance
+CL out Gnd {{LOAD_CAP}}
+
+* Device Under Test (DUT) - CMOS Inverter
+M1000 out in vdd vdd pfet w=10u l=3u
++  ad=110p pd=42u as=70p ps=34u
+M1001 out in Gnd Gnd nfet w=8u l=3u
++  ad=80p pd=36u as=56p ps=30u
+
+* Transistor Models (Level 1)
+.model pfet pmos level=1 vto=-0.7 kp=20u
+.model nfet nmos level=1 vto=0.7  kp=50u
+
+* Simulation Control
+.control
+tran 0.01n 30n
+* Write out time, v(in), v(out) to a clean tabular format
+wrdata {{TEMP_OUT_FILE}} v(in) v(out)
+.endc
+.end
